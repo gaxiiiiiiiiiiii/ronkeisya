@@ -851,6 +851,56 @@ Proof.
     apply swapL; auto.
 Qed.
 
+Section computability.
+
+Variable A B : prop.
+Definition S:= [A ⊃ B; A ⊃ B; A ⊃ B; A ⊃ B; A] → [B].
+
+Goal S.
+Proof.
+  unfold S.
+
+  rewrite <- (app_nil_l [B]).
+  apply contraR; simpl.
+  rewrite (cons_app B _).
+  rewrite <- (app_nil_r (cons _ _)).
+  eapply impL; [|apply init].
+  apply weakR.
+
+  rewrite <- (app_nil_l [B]).
+  apply contraR; simpl.
+  rewrite (cons_app B _).
+  rewrite <- (app_nil_r (cons _ _)).
+  eapply impL; [|apply init].
+  apply weakR.
+
+  rewrite <- (app_nil_l [B]).
+  apply contraR; simpl.
+  rewrite (cons_app B _).
+  rewrite <- (app_nil_r (cons _ _)).
+  eapply impL; [|apply init].
+  apply weakR.
+
+
+  simpl.
+  rewrite <- app_nil_l.
+  rewrite <- (app_nil_r [A ⊃ B;A]).
+  apply impL; simpl ;apply init.
+Qed.
+
+
+
+
+End computability.
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1035,6 +1085,7 @@ Theorem nil_entail_nil :
 Proof.
   move /entail_imp => /= /soundness F.
   move : (F dummy); simpl.
+  repeat rewrite fls_false tru_true; simpl.
   move => f; inversion f.
 Qed.
 
